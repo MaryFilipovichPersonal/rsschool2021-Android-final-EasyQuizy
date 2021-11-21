@@ -1,4 +1,4 @@
-package com.rsshool2021.android.finaltask.easyquizy.presentation
+package com.rsshool2021.android.finaltask.easyquizy.presentation.quizscreen
 
 import android.os.Bundle
 import android.view.View

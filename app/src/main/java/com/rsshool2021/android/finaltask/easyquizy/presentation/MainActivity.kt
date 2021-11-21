@@ -6,6 +6,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.rsshool2021.android.finaltask.easyquizy.Constants
 import com.rsshool2021.android.finaltask.easyquizy.R
 import com.rsshool2021.android.finaltask.easyquizy.databinding.ActivityMainBinding
+import com.rsshool2021.android.finaltask.easyquizy.presentation.quizscreen.TestFragment
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
