@@ -1,13 +1,15 @@
-package com.rsshool2021.android.finaltask.easyquizy.presentation
+package com.rsshool2021.android.finaltask.easyquizy.presentation.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.rsshool2021.android.finaltask.easyquizy.Constants
+import com.rsshool2021.android.finaltask.easyquizy.utils.Constants
 import com.rsshool2021.android.finaltask.easyquizy.R
 import com.rsshool2021.android.finaltask.easyquizy.databinding.ActivityMainBinding
-import com.rsshool2021.android.finaltask.easyquizy.presentation.quizscreen.TestFragment
+import com.rsshool2021.android.finaltask.easyquizy.presentation.quiz.QuizFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val viewBinding by viewBinding(ActivityMainBinding::bind)
@@ -23,7 +25,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         supportFragmentManager.beginTransaction()
             .replace(
                 viewBinding.amContainer.id,
-                TestFragment.newInstance(),
+                QuizFragment.newInstance(),
                 Constants.TEST_FRAGMENT_TAG
             )
             .commit()
