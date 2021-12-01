@@ -13,7 +13,7 @@ data class QuestionResponse(
     @SerialName("difficulty")
     val difficulty: String,
     @SerialName("incorrect_answers")
-    val incorrectAnswers: ArrayList<String>,
+    val incorrectAnswers: List<String>,
     @SerialName("question")
     val question: String,
     @SerialName("type")

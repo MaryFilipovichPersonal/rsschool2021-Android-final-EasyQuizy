@@ -1,7 +1,7 @@
 package com.rsshool2021.android.finaltask.easyquizy.domain.quiz.entity
 
-data class Question(
+data class QuestionDomain(
     val question: String,
     val correctAnswer: String,
-    val incorrectAnswers: ArrayList<String>
+    val incorrectAnswers: List<String>
 )

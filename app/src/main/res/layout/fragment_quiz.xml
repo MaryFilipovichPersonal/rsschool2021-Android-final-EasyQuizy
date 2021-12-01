@@ -4,26 +4,22 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/ft_btn_get_questions"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="8dp"
+        android:id="@+id/fq_pb_quiz_progress"
+        android:max="10"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Get test questions"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.google.android.material.textview.MaterialTextView
+    <androidx.viewpager2.widget.ViewPager2
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/ft_tv_data"
         android:layout_margin="8dp"
-        android:nestedScrollingEnabled="true"
-        android:scrollbars="vertical"
-        android:scrollbarStyle="outsideInset"
-        android:overScrollMode="ifContentScrolls"
-        android:isScrollContainer="true"
-        app:layout_constraintTop_toBottomOf="@id/ft_btn_get_questions"
+        android:id="@+id/fq_view_pager"
+        app:layout_constraintTop_toBottomOf="@id/fq_pb_quiz_progress"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

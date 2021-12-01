@@ -1,6 +1,6 @@
 package com.rsshool2021.android.finaltask.easyquizy.data.quiz
 
-import com.rsshool2021.android.finaltask.easyquizy.data.common.module.NetworkModule
+import com.rsshool2021.android.finaltask.easyquizy.data.common.di.NetworkModule
 import com.rsshool2021.android.finaltask.easyquizy.data.quiz.remote.api.QuizApi
 import com.rsshool2021.android.finaltask.easyquizy.data.quiz.repository.QuizRepositoryImpl
 import com.rsshool2021.android.finaltask.easyquizy.domain.quiz.QuizRepository
@@ -11,7 +11,6 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.ExperimentalSerializationApi
 import retrofit2.Retrofit
 import javax.inject.Singleton
-import kotlin.coroutines.CoroutineContext
 
 @ExperimentalSerializationApi
 @Module(includes = [NetworkModule::class])

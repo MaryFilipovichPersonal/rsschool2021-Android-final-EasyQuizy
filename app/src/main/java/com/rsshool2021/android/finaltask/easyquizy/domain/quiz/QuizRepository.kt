@@ -1,9 +1,8 @@
 package com.rsshool2021.android.finaltask.easyquizy.domain.quiz
 
-import com.rsshool2021.android.finaltask.easyquizy.domain.quiz.entity.Question
-import kotlinx.coroutines.flow.Flow
+import com.rsshool2021.android.finaltask.easyquizy.domain.quiz.entity.QuestionDomain
 
 interface QuizRepository {
 
-    fun getQuizQuestions(): Flow<List<Question>>
+    suspend fun getQuizQuestions(): Result<List<QuestionDomain>>
 }

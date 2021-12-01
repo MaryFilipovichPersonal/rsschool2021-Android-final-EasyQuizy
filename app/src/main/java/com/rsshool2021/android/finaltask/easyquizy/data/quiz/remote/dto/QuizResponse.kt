@@ -9,5 +9,5 @@ data class QuizResponse(
     @SerialName("response_code")
     val responseCode: Int,
     @SerialName("results")
-    val questionResponses: ArrayList<QuestionResponse>
+    val questionResponses: List<QuestionResponse>
 )

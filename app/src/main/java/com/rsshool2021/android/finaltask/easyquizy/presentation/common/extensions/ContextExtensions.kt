@@ -1,4 +1,4 @@
-package com.rsshool2021.android.finaltask.easyquizy.presentation.extensions
+package com.rsshool2021.android.finaltask.easyquizy.presentation.common.extensions
 
 import android.content.Context
 import android.widget.Toast
