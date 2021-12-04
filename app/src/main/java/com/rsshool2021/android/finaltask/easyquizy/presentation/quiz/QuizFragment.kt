@@ -1,8 +1,8 @@
 package com.rsshool2021.android.finaltask.easyquizy.presentation.quiz
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -18,8 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-const val TAG = "QuizFragment"
-
 @AndroidEntryPoint
 class QuizFragment : Fragment(R.layout.fragment_quiz) {
 
@@ -27,7 +25,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
 
     private val viewModel: QuizViewModel by viewModels()
 
-    private val adapter : QuizViewPagerAdapter by lazy {
+    private val adapter: QuizViewPagerAdapter by lazy {
         QuizViewPagerAdapter { position, checkedAnswer ->
             handleAnswerCheck(position, checkedAnswer)
         }
@@ -52,13 +50,17 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 when (it) {
-                    is QuizViewState.Success -> handleResult(it.quiz)
+                    is QuizViewState.Success -> {
+                        showLoading(false)
+                        handleResult(it.quiz)
+                    }
                     is QuizViewState.Error -> {
+                        showLoading(false)
                         if (it.errorMessage.isNotEmpty()) {
                             requireContext().showToast(it.errorMessage)
                         }
                     }
-               //     is QuizViewState.Loading -> showLoading()
+                    is QuizViewState.Loading -> showLoading(true)
                 }
             }
             .launchIn(lifecycleScope)
@@ -70,12 +72,19 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             .launchIn(lifecycleScope)
     }
 
+    private fun showLoading(isVisible: Boolean) {
+        with(binding) {
+            fqPbQuizProgress.isVisible = !isVisible
+            fqViewPager.isVisible = !isVisible
+            fqPbLoadingProgress.isVisible = isVisible
+        }
+    }
+
     private fun handleResult(quiz: Quiz) {
         adapter.submitList(quiz.questions)
     }
 
     private fun handleAnswerCheck(position: Int, checkedAnswer: String) {
-        Log.d(TAG,"position = $position, checkedAnswer = $checkedAnswer")
         viewModel.setCheckedAnswer(position, checkedAnswer)
     }
 }

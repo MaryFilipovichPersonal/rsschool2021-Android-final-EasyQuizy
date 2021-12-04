@@ -1,18 +1,13 @@
 package com.rsshool2021.android.finaltask.easyquizy.presentation.quiz.adapter
 
-import android.util.Log
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.view.children
-import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.rsshool2021.android.finaltask.easyquizy.databinding.ViewHolderQuestionBinding
 import com.rsshool2021.android.finaltask.easyquizy.presentation.common.extensions.fromHtml
 import com.rsshool2021.android.finaltask.easyquizy.presentation.quiz.entity.Question
-import timber.log.Timber
-
-const val TAG = "QuestionViewHolder"
 
 class QuestionViewHolder(
     private val binding: ViewHolderQuestionBinding,
@@ -21,9 +16,9 @@ class QuestionViewHolder(
 
     init {
         binding.vhqRgAnswers.setOnCheckedChangeListener { rg, id ->
-            val radioButton = (binding.vhqRgAnswers.children.firstOrNull { it.id == id } as MaterialRadioButton?)
-            val checkedAnswer: String = if (radioButton?.isChecked == true) radioButton.text.toString() else "radio button null"
-            Log.d(TAG,"setOnCheckedChangeListener(): checkedAnswer = $checkedAnswer")
+            val radioButton = (rg.children.firstOrNull { it.id == id } as MaterialRadioButton?)
+            val checkedAnswer: String =
+                if (radioButton?.isChecked == true) radioButton.text.toString() else "radio button null"
             checkListener(this.layoutPosition, checkedAnswer)
         }
     }
@@ -33,14 +28,13 @@ class QuestionViewHolder(
             vhqTvQuestion.text = question.question.fromHtml()
             vhqRgAnswers.removeAllViewsInLayout()
             vhqRgAnswers.removeAllViews()
-            val answers = question.allAnswers.map { answer ->
+            val answersRadioBtns = question.allAnswers.map { answer ->
                 buildRadioButton(answer)
             }
-            answers.forEach { radioBtn ->
+            answersRadioBtns.forEach { radioBtn ->
                 vhqRgAnswers.addView(radioBtn)
             }
-            answers.find { it.text == question.checkedAnswer}?.isChecked = true
-            Log.d(TAG,"bind(): question = $question")
+            answersRadioBtns.find { it.text == question.checkedAnswer }?.isChecked = true
         }
     }
 

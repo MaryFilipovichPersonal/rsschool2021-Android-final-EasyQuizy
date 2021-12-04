@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.rsshool2021.android.finaltask.easyquizy.databinding.ViewHolderQuestionBinding
-import com.rsshool2021.android.finaltask.easyquizy.domain.quiz.entity.QuestionDomain
 import com.rsshool2021.android.finaltask.easyquizy.presentation.quiz.entity.Question
 
 class QuizViewPagerAdapter(
@@ -30,7 +29,7 @@ class QuizViewPagerAdapter(
             oldItem == newItem
 
         override fun areContentsTheSame(oldItem: Question, newItem: Question): Boolean =
-            oldItem.question == newItem.question
+            oldItem.checkedAnswer == newItem.checkedAnswer
     }
 
 }
