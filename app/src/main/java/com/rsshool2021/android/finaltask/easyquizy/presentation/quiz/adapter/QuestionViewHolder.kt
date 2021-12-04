@@ -25,9 +25,8 @@ class QuestionViewHolder(
 
     fun bind(question: Question) {
         with(binding) {
-            vhqTvQuestion.text = question.question.fromHtml()
-            vhqRgAnswers.removeAllViewsInLayout()
             vhqRgAnswers.removeAllViews()
+            vhqTvQuestion.text = question.question.fromHtml()
             val answersRadioBtns = question.allAnswers.map { answer ->
                 buildRadioButton(answer)
             }

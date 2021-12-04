@@ -26,10 +26,10 @@ class QuizViewPagerAdapter(
     companion object DiffCallback : DiffUtil.ItemCallback<Question>() {
 
         override fun areItemsTheSame(oldItem: Question, newItem: Question): Boolean =
-            oldItem == newItem
+            oldItem.question == newItem.question
 
         override fun areContentsTheSame(oldItem: Question, newItem: Question): Boolean =
-            oldItem.checkedAnswer == newItem.checkedAnswer
+            oldItem == newItem
     }
 
 }
