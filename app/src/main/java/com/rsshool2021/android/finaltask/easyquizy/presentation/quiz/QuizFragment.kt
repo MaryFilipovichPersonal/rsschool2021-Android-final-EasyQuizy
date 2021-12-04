@@ -1,6 +1,7 @@
 package com.rsshool2021.android.finaltask.easyquizy.presentation.quiz
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,6 +18,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+const val TAG = "QuizFragment"
+
 @AndroidEntryPoint
 class QuizFragment : Fragment(R.layout.fragment_quiz) {
 
@@ -25,7 +28,9 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
     private val viewModel: QuizViewModel by viewModels()
 
     private val adapter : QuizViewPagerAdapter by lazy {
-        QuizViewPagerAdapter()
+        QuizViewPagerAdapter { position, checkedAnswer ->
+            handleAnswerCheck(position, checkedAnswer)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,9 +62,20 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                 }
             }
             .launchIn(lifecycleScope)
+        viewModel.quiz
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                handleResult(it)
+            }
+            .launchIn(lifecycleScope)
     }
 
     private fun handleResult(quiz: Quiz) {
         adapter.submitList(quiz.questions)
+    }
+
+    private fun handleAnswerCheck(position: Int, checkedAnswer: String) {
+        Log.d(TAG,"position = $position, checkedAnswer = $checkedAnswer")
+        viewModel.setCheckedAnswer(position, checkedAnswer)
     }
 }

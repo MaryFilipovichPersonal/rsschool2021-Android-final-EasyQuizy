@@ -86,4 +86,7 @@ dependencies {
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_viewmodel_version"
     kapt "androidx.hilt:hilt-compiler:$hilt_viewmodel_version"
 
+    //Logging
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
 }

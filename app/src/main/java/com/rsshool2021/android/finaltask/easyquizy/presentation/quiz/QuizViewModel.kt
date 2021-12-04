@@ -1,5 +1,6 @@
 package com.rsshool2021.android.finaltask.easyquizy.presentation.quiz
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rsshool2021.android.finaltask.easyquizy.domain.quiz.entity.QuestionDomain
@@ -17,8 +18,13 @@ import javax.inject.Inject
 class QuizViewModel @Inject constructor(private val getQuestionsUseCase: GetQuizQuestionsUseCase) :
     ViewModel() {
 
+    private val TAG: String = "QuizViewModel"
+
     private val _viewState = MutableStateFlow<QuizViewState>(QuizViewState.Success(Quiz()))
     val viewState: StateFlow<QuizViewState> get() = _viewState
+
+    private val _quiz = MutableStateFlow(Quiz())
+    val quiz: StateFlow<Quiz> get() = _quiz
 
     fun getQuiz() {
         viewModelScope.launch {
@@ -26,10 +32,22 @@ class QuizViewModel @Inject constructor(private val getQuestionsUseCase: GetQuiz
 
             getQuestionsUseCase.execute()
                 .onSuccess { result ->
-                    _viewState.value = QuizViewState.Success(getMappedQuestions(result))
+                    val quiz = getMappedQuestions(result)
+                    _viewState.value = QuizViewState.Success(quiz)
+                    _quiz.value = quiz
                 }.onFailure { error ->
                     _viewState.value = QuizViewState.Error(error.localizedMessage.orEmpty())
                 }
+        }
+    }
+
+    fun setCheckedAnswer(position: Int, answer: String){
+        val questions:MutableList<Question> = _quiz.value.questions.toMutableList()
+        val question = questions[position].copy()
+        if (question.checkedAnswer != answer) {
+            Log.d(TAG,"setCheckedAnswer(): question.checkedAnswer = ${question.checkedAnswer}, answer = $answer")
+            questions[position] = question.copy(checkedAnswer = answer)
+            _quiz.value = Quiz(questions)
         }
     }
 
