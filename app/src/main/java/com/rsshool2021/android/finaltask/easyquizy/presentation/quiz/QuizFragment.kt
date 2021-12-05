@@ -38,11 +38,19 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
 
         setObservers()
 
+        setListeners()
+
         viewModel.getQuiz()
     }
 
     private fun setViewPager() {
         binding.fqViewPager.adapter = adapter
+    }
+
+    private fun setListeners() {
+        binding.fqBtnRetry.setOnClickListener {
+            viewModel.getQuiz()
+        }
     }
 
     private fun setObservers() {
@@ -51,16 +59,21 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             .onEach {
                 when (it) {
                     is QuizViewState.Success -> {
-                        showLoading(false)
+                        showLoadingUi(false)
+                        showQuizUi(true)
+                        showErrorUi(false)
                         handleResult(it.quiz)
                     }
                     is QuizViewState.Error -> {
-                        showLoading(false)
-                        if (it.errorMessage.isNotEmpty()) {
-                            requireContext().showToast(it.errorMessage)
-                        }
+                            showLoadingUi(false)
+                            showQuizUi(false)
+                            showErrorUi(true, it.errorMessage)
                     }
-                    is QuizViewState.Loading -> showLoading(true)
+                    is QuizViewState.Loading -> {
+                        showLoadingUi(true)
+                        showQuizUi(false)
+                        showErrorUi(false)
+                    }
                 }
             }
             .launchIn(lifecycleScope)
@@ -72,11 +85,22 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             .launchIn(lifecycleScope)
     }
 
-    private fun showLoading(isVisible: Boolean) {
+    private fun showLoadingUi(isVisible: Boolean) {
+        binding.fqPbLoadingProgress.isVisible = isVisible
+    }
+
+    private fun showQuizUi(isVisible: Boolean) {
         with(binding) {
-            fqPbQuizProgress.isVisible = !isVisible
-            fqViewPager.isVisible = !isVisible
-            fqPbLoadingProgress.isVisible = isVisible
+            fqPbQuizProgress.isVisible = isVisible
+            fqViewPager.isVisible = isVisible
+        }
+    }
+
+    private fun showErrorUi(isVisible: Boolean, error: String = "") {
+        with(binding) {
+            fqTvErrorMessage.text = error
+            fqBtnRetry.isVisible = isVisible
+            fqTvErrorMessage.isVisible = isVisible
         }
     }
 
