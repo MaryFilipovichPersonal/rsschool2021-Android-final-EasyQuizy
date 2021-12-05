@@ -8,10 +8,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.rsshool2021.android.finaltask.easyquizy.R
 import com.rsshool2021.android.finaltask.easyquizy.databinding.FragmentQuizBinding
-import com.rsshool2021.android.finaltask.easyquizy.presentation.common.extensions.showToast
 import com.rsshool2021.android.finaltask.easyquizy.presentation.quiz.adapter.QuizViewPagerAdapter
 import com.rsshool2021.android.finaltask.easyquizy.presentation.quiz.entity.Quiz
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,6 +51,13 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         binding.fqBtnRetry.setOnClickListener {
             viewModel.getQuiz()
         }
+        binding.fqViewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                binding.fqPbQuizProgress.progress = position + 1
+            }
+        })
+
     }
 
     private fun setObservers() {
@@ -65,9 +72,9 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                         handleResult(it.quiz)
                     }
                     is QuizViewState.Error -> {
-                            showLoadingUi(false)
-                            showQuizUi(false)
-                            showErrorUi(true, it.errorMessage)
+                        showLoadingUi(false)
+                        showQuizUi(false)
+                        showErrorUi(true, it.errorMessage)
                     }
                     is QuizViewState.Loading -> {
                         showLoadingUi(true)
