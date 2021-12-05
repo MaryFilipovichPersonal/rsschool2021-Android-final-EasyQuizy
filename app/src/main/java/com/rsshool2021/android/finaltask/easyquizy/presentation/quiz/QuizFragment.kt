@@ -62,34 +62,50 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
 
     private fun setObservers() {
         viewModel.viewState
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 when (it) {
                     is QuizViewState.Success -> {
-                        showLoadingUi(false)
-                        showQuizUi(true)
-                        showErrorUi(false)
-                        handleResult(it.quiz)
+                        handleSuccessResult(it.quiz)
                     }
                     is QuizViewState.Error -> {
-                        showLoadingUi(false)
-                        showQuizUi(false)
-                        showErrorUi(true, it.errorMessage)
+                        handleFailResult(it.errorMessage)
                     }
                     is QuizViewState.Loading -> {
-                        showLoadingUi(true)
-                        showQuizUi(false)
-                        showErrorUi(false)
+                        handleLoadingState()
                     }
                 }
             }
-            .launchIn(lifecycleScope)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
         viewModel.quiz
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                handleResult(it)
+                handleSuccessResult(it)
             }
-            .launchIn(lifecycleScope)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun handleSuccessResult(quiz: Quiz) {
+        showLoadingUi(false)
+        showQuizUi(true)
+        showErrorUi(false)
+        adapter.submitList(quiz.questions)
+    }
+
+    private fun handleFailResult(error: String) {
+        showLoadingUi(false)
+        showQuizUi(false)
+        showErrorUi(true, error)
+    }
+
+    private fun handleLoadingState() {
+        showLoadingUi(true)
+        showQuizUi(false)
+        showErrorUi(false)
+    }
+
+    private fun handleAnswerCheck(position: Int, checkedAnswer: String) {
+        viewModel.setCheckedAnswer(position, checkedAnswer)
     }
 
     private fun showLoadingUi(isVisible: Boolean) {
@@ -109,13 +125,5 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             fqBtnRetry.isVisible = isVisible
             fqTvErrorMessage.isVisible = isVisible
         }
-    }
-
-    private fun handleResult(quiz: Quiz) {
-        adapter.submitList(quiz.questions)
-    }
-
-    private fun handleAnswerCheck(position: Int, checkedAnswer: String) {
-        viewModel.setCheckedAnswer(position, checkedAnswer)
     }
 }
