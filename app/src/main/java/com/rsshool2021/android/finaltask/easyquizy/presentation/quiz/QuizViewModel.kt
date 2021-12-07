@@ -47,6 +47,8 @@ class QuizViewModel @Inject constructor(private val getQuestionsUseCase: GetQuiz
         }
     }
 
+    fun getQuizResult(): Int = _quiz.value.calculateScore()
+
     private fun getMappedQuestions(result: List<QuestionDomain>): Quiz =
         Quiz(
             result.map {

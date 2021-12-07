@@ -22,5 +22,24 @@
         android:id="@+id/quiz_dest"
         android:name="com.rsshool2021.android.finaltask.easyquizy.presentation.quiz.QuizFragment"
         android:label="QuizFragment"
-        tools:layout="@layout/fragment_quiz"/>
+        tools:layout="@layout/fragment_quiz">
+        <action
+            android:id="@+id/action_quiz_dest_to_result_dest"
+            app:destination="@id/result_dest" />
+    </fragment>
+    <dialog
+        android:id="@+id/result_dest"
+        android:name="com.rsshool2021.android.finaltask.easyquizy.presentation.result.ResultDialogFragment"
+        android:label="ResultDialogFragment"
+        tools:layout="@layout/dialog_quiz_result">
+        <argument
+            android:name="result"
+            app:argType="integer"
+            android:defaultValue="0"/>
+        <action
+            android:id="@+id/action_result_dest_to_start_screen_dest"
+            app:destination="@id/start_screen_dest"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
+    </dialog>
 </navigation>

@@ -5,7 +5,7 @@ data class Quiz(
 ) {
 
     fun calculateScore(): Int =
-        questions.map { question -> question.isCorrect() }.size
+        questions.filter { question -> question.isCorrect() }.size
 
     fun getProgress(): Int =
         questions.map { question -> question.isChecked() }.size

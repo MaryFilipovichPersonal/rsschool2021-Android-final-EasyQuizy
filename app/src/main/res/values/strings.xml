@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Easy Quizy</string>
+
+    <string name="quiz_result">Your result: %1d / 10</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.rsshool2021.android.finaltask.easyquizy.R
@@ -48,16 +49,27 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
     }
 
     private fun setListeners() {
-        binding.fqBtnRetry.setOnClickListener {
-            viewModel.getQuiz()
-        }
-        binding.fqViewPager.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                binding.fqPbQuizProgress.progress = position + 1
+        with(binding) {
+            fqBtnRetry.setOnClickListener {
+                viewModel.getQuiz()
             }
-        })
-
+            fqViewPager.registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    fqPbQuizProgress.progress = position + 1
+                    fqBtnSubmitQuiz.visibility =
+                        if (position == adapter.currentList.size - 1) View.VISIBLE else View.INVISIBLE
+                }
+            })
+            fqBtnSubmitQuiz.setOnClickListener {
+                val result = viewModel.getQuizResult()
+                findNavController().navigate(
+                    QuizFragmentDirections.actionQuizDestToResultDest(
+                        result
+                    )
+                )
+            }
+        }
     }
 
     private fun setObservers() {
@@ -65,14 +77,15 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 when (it) {
+                    is QuizViewState.Loading -> {
+                        handleLoadingState()
+                    }
                     is QuizViewState.Success -> {
-                        handleSuccessResult(it.quiz)
+                        updateQuiz(it.quiz)
+                        handleSuccessResult()
                     }
                     is QuizViewState.Error -> {
                         handleFailResult(it.errorMessage)
-                    }
-                    is QuizViewState.Loading -> {
-                        handleLoadingState()
                     }
                 }
             }
@@ -80,16 +93,19 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         viewModel.quiz
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                handleSuccessResult(it)
+                updateQuiz(it)
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun handleSuccessResult(quiz: Quiz) {
-        showLoadingUi(false)
-        showQuizUi(true)
-        showErrorUi(false)
+    private fun updateQuiz(quiz: Quiz) {
         adapter.submitList(quiz.questions)
+    }
+
+    private fun handleSuccessResult() {
+        showLoadingUi(false)
+        showErrorUi(false)
+        showQuizUi(true)
     }
 
     private fun handleFailResult(error: String) {
@@ -99,9 +115,9 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
     }
 
     private fun handleLoadingState() {
-        showLoadingUi(true)
-        showQuizUi(false)
         showErrorUi(false)
+        showQuizUi(false)
+        showLoadingUi(true)
     }
 
     private fun handleAnswerCheck(position: Int, checkedAnswer: String) {
