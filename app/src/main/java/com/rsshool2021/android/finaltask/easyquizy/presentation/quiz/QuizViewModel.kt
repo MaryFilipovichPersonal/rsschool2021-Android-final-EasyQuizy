@@ -24,17 +24,19 @@ class QuizViewModel @Inject constructor(private val getQuestionsUseCase: GetQuiz
     val quiz: StateFlow<Quiz> get() = _quiz
 
     fun getQuiz() {
-        viewModelScope.launch {
-            _viewState.value = QuizViewState.Loading
+        if (quiz.value.questions.isEmpty()) {
+            viewModelScope.launch {
+                _viewState.value = QuizViewState.Loading
 
-            getQuestionsUseCase.execute()
-                .onSuccess { result ->
-                    val quiz = getMappedQuestions(result)
-                    _viewState.value = QuizViewState.Success(quiz)
-                    _quiz.value = quiz
-                }.onFailure { error ->
-                    _viewState.value = QuizViewState.Error(error.localizedMessage.orEmpty())
-                }
+                getQuestionsUseCase.execute()
+                    .onSuccess { result ->
+                        val quiz = getMappedQuestions(result)
+                        _viewState.value = QuizViewState.Success(quiz)
+                        _quiz.value = quiz
+                    }.onFailure { error ->
+                        _viewState.value = QuizViewState.Error(error.localizedMessage.orEmpty())
+                    }
+            }
         }
     }
 

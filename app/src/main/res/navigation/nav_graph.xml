@@ -17,11 +17,18 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_go_to_settings"
+            app:destination="@id/settings_dest" />
     </fragment>
     <fragment
         android:id="@+id/quiz_dest"
         android:name="com.rsshool2021.android.finaltask.easyquizy.presentation.quiz.QuizFragment"
         android:label="QuizFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
         tools:layout="@layout/fragment_quiz">
         <action
             android:id="@+id/action_quiz_dest_to_result_dest"
@@ -31,15 +38,27 @@
         android:id="@+id/result_dest"
         android:name="com.rsshool2021.android.finaltask.easyquizy.presentation.result.ResultDialogFragment"
         android:label="ResultDialogFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
         tools:layout="@layout/dialog_quiz_result">
         <argument
             android:name="result"
-            app:argType="integer"
-            android:defaultValue="0"/>
+            android:defaultValue="0"
+            app:argType="integer" />
         <action
             android:id="@+id/action_result_dest_to_start_screen_dest"
             app:destination="@id/start_screen_dest"
             app:popUpTo="@id/nav_graph"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </dialog>
+    <fragment
+        android:id="@+id/settings_dest"
+        android:name="com.rsshool2021.android.finaltask.easyquizy.presentation.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 </navigation>

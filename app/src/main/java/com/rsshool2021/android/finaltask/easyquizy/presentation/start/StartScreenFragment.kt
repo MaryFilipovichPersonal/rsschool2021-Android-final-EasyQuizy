@@ -3,7 +3,6 @@ package com.rsshool2021.android.finaltask.easyquizy.presentation.start
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.rsshool2021.android.finaltask.easyquizy.R
@@ -15,19 +14,21 @@ class StartScreenFragment : Fragment(R.layout.fragment_start_screen) {
 
     private val binding by viewBinding(FragmentStartScreenBinding::bind)
 
-    private val viewModel: StartScreenViewModel by viewModels()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setClickListeners()
 
-        setObservers()
     }
 
     private fun setClickListeners() {
-        binding.fsBtnStartQuiz.setOnClickListener {
-            navigateToQuiz()
+        with(binding) {
+            fsBtnStartQuiz.setOnClickListener {
+                navigateToQuiz()
+            }
+            fsBtnSettings.setOnClickListener {
+                navigateToSettings()
+            }
         }
     }
 
@@ -35,12 +36,8 @@ class StartScreenFragment : Fragment(R.layout.fragment_start_screen) {
         findNavController().navigate(StartScreenFragmentDirections.actionGoToQuiz())
     }
 
-    private fun setObservers() {
-//        TODO("Not yet implemented")
+    private fun navigateToSettings() {
+        findNavController().navigate(StartScreenFragmentDirections.actionGoToSettings())
     }
 
-    companion object {
-
-        fun newInstance() = StartScreenFragment()
-    }
 }
