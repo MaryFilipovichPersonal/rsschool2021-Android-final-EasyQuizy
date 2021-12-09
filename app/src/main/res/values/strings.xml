@@ -11,12 +11,17 @@
     <!-- Messages Preferences -->
     <string name="theme_title">Choose current theme</string>
 
-<!--    Preferences values-->
+    <!--    Preferences values-->
     <string name="dark">Dark</string>
     <string name="key_dark">DARK</string>
     <string name="light">Light</string>
     <string name="key_light">LIGHT</string>
     <string name="system">System</string>
     <string name="key_system">SYSTEM</string>
+
+    <!--    Buttons-->
+    <string name="ok_btn">OK</string>
+    <string name="retry_btn">Retry</string>
+    <string name="submit_btn">Submit</string>
 
 </resources>

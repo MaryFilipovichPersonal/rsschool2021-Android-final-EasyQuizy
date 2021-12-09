@@ -2,8 +2,8 @@ package com.rsshool2021.android.finaltask.easyquizy.data.quiz.repository
 
 import com.rsshool2021.android.finaltask.easyquizy.data.common.mappers.ResponseToQuestionDomainMapper
 import com.rsshool2021.android.finaltask.easyquizy.data.quiz.remote.api.QuizApi
-import com.rsshool2021.android.finaltask.easyquizy.domain.quiz.entity.QuestionDomain
 import com.rsshool2021.android.finaltask.easyquizy.domain.quiz.QuizRepository
+import com.rsshool2021.android.finaltask.easyquizy.domain.quiz.entity.QuestionDomain
 import javax.inject.Inject
 
 private const val SUCCESS_CODE = 0

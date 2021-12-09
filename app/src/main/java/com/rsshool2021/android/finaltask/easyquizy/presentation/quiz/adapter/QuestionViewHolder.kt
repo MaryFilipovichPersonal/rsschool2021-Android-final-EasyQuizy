@@ -27,13 +27,13 @@ class QuestionViewHolder(
         with(binding) {
             vhqRgAnswers.removeAllViews()
             vhqTvQuestion.text = question.question.fromHtml()
-            val answersRadioBtns = question.allAnswers.map { answer ->
+            val answersRadioButtons = question.allAnswers.map { answer ->
                 buildRadioButton(answer)
             }
-            answersRadioBtns.forEach { radioBtn ->
+            answersRadioButtons.forEach { radioBtn ->
                 vhqRgAnswers.addView(radioBtn)
             }
-            answersRadioBtns.find { it.text == question.checkedAnswer }?.isChecked = true
+            answersRadioButtons.find { it.text == question.checkedAnswer }?.isChecked = true
         }
     }
 

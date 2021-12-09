@@ -8,5 +8,5 @@ data class Quiz(
         questions.filter { question -> question.isCorrect() }.size
 
     fun getProgress(): Int =
-        questions.map { question -> question.isChecked() }.size
+        questions.filter { question -> question.isChecked() }.size
 }
