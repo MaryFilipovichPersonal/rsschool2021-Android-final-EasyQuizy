@@ -13,7 +13,7 @@ class ResultRepositoryImpl @Inject constructor(
 
     override suspend fun getBestResult(): Int {
         val key = resourceManager.getString(R.string.key_result)
-        return prefsManager.get(key, -1)
+        return prefsManager.get(key,-1)
     }
 
     override suspend fun saveBestResult(result: Int) {

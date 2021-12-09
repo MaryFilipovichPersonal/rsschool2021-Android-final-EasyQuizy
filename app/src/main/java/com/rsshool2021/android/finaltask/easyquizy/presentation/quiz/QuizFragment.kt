@@ -56,9 +56,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             fqViewPager.registerOnPageChangeCallback(object :
                 ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
-                    fqPbQuizProgress.progress = position + 1
-                    fqBtnSubmitQuiz.visibility =
-                        if (position == adapter.currentList.size - 1) View.VISIBLE else View.INVISIBLE
+                    viewModel.updatePosition(position)
                 }
             })
             fqBtnSubmitQuiz.setOnClickListener {
@@ -81,8 +79,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                         handleLoadingState()
                     }
                     is QuizViewState.Success -> {
-                        updateQuiz(it.quiz)
-                        handleSuccessResult()
+                        handleSuccessResult(it)
                     }
                     is QuizViewState.Error -> {
                         handleFailResult(it.errorMessage)
@@ -90,19 +87,15 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                 }
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
-        viewModel.quiz
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach {
-                updateQuiz(it)
-            }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun updateQuiz(quiz: Quiz) {
-        adapter.submitList(quiz.questions)
-    }
-
-    private fun handleSuccessResult() {
+    private fun handleSuccessResult(viewState: QuizViewState.Success) {
+        with(viewState) {
+            updateQuiz(quiz)
+            setProgress(progress)
+            setPosition(currentPosition)
+            setSubmitBtnVisibility(isSubmitBtnVisible)
+        }
         showLoadingUi(false)
         showErrorUi(false)
         showQuizUi(true)
@@ -140,6 +133,27 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             fqTvErrorMessage.text = error
             fqBtnRetry.isVisible = isVisible
             fqTvErrorMessage.isVisible = isVisible
+        }
+    }
+
+    private fun updateQuiz(quiz: Quiz) {
+        adapter.submitList(quiz.questions)
+    }
+
+    private fun setPosition(position: Int) {
+        if (binding.fqViewPager.currentItem != position)
+            binding.fqViewPager.setCurrentItem(position, false)
+    }
+
+    private fun setProgress(progress: Int) {
+        binding.fqPbQuizProgress.progress = progress
+    }
+
+    private fun setSubmitBtnVisibility(isVisible: Boolean) {
+        binding.fqBtnSubmitQuiz.visibility = if (isVisible) {
+            View.VISIBLE
+        } else {
+            View.INVISIBLE
         }
     }
 }

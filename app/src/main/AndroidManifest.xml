@@ -15,8 +15,7 @@
         android:theme="@style/Theme.EasyQuizy">
         <activity
             android:name=".presentation.main.MainActivity"
-            android:exported="true"
-            android:screenOrientation="portrait">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
