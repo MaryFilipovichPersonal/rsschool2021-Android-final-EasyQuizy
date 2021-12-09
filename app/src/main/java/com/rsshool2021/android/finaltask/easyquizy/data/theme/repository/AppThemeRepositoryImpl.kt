@@ -1,4 +1,4 @@
-package com.rsshool2021.android.finaltask.easyquizy.data.local.repository
+package com.rsshool2021.android.finaltask.easyquizy.data.theme.repository
 
 import com.rsshool2021.android.finaltask.easyquizy.R
 import com.rsshool2021.android.finaltask.easyquizy.data.common.PreferenceManager
@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class AppThemeRepositoryImpl @Inject constructor(
     private val prefsManager: PreferenceManager,
-    private val resourceManager: ResourceManager,
+    private val resourceManager: ResourceManager
 ) : AppThemeRepository {
 
     override suspend fun getAppTheme(): String {
