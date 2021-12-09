@@ -3,7 +3,6 @@ package com.rsshool2021.android.finaltask.easyquizy.data.common
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
