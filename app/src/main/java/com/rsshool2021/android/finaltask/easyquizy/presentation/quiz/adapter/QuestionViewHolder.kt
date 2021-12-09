@@ -16,10 +16,10 @@ class QuestionViewHolder(
 
     init {
         binding.vhqRgAnswers.setOnCheckedChangeListener { rg, id ->
-            val radioButton = (rg.children.firstOrNull { it.id == id } as MaterialRadioButton?)
-            val checkedAnswer: String =
-                if (radioButton?.isChecked == true) radioButton.text.toString() else "radio button null"
-            checkListener(this.layoutPosition, checkedAnswer)
+            val radioButton = rg.children.firstOrNull { it.id == id } as? MaterialRadioButton
+            radioButton?.let {
+                checkListener(this.layoutPosition, it.text.toString())
+            }
         }
     }
 
@@ -27,13 +27,13 @@ class QuestionViewHolder(
         with(binding) {
             vhqRgAnswers.removeAllViews()
             vhqTvQuestion.text = question.question.fromHtml()
-            val answersRadioButtons = question.allAnswers.map { answer ->
-                buildRadioButton(answer)
-            }
-            answersRadioButtons.forEach { radioBtn ->
+
+            question.allAnswers.forEach { answer ->
+                val radioBtn = buildRadioButton(answer).apply {
+                    isChecked = answer == question.checkedAnswer
+                }
                 vhqRgAnswers.addView(radioBtn)
             }
-            answersRadioButtons.find { it.text == question.checkedAnswer }?.isChecked = true
         }
     }
 
