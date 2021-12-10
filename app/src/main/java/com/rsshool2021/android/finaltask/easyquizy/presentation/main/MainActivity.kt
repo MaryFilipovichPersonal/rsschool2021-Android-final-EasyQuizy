@@ -8,6 +8,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.rsshool2021.android.finaltask.easyquizy.R
 import com.rsshool2021.android.finaltask.easyquizy.databinding.ActivityMainBinding
@@ -18,7 +20,7 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    private val viewBinding by viewBinding(ActivityMainBinding::bind)
+    private val binding by viewBinding(ActivityMainBinding::bind)
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -30,14 +32,25 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navHostFragment.navController
     }
 
+    private val appBarConfiguration: AppBarConfiguration by lazy {
+        AppBarConfiguration(navController.graph)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewBinding.root
+        binding.root
+
+        setupToolbar()
 
         setObservers()
 
         viewModel.getAppTheme()
 
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.amToolbar)
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -4,18 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
-    android:padding="16dp"
-    app:cardCornerRadius="16dp">
+    android:layout_margin="@dimen/padding_normal"
+    android:padding="@dimen/padding_normal"
+    app:cardCornerRadius="@dimen/padding_normal">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/dqr_tv_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:maxLines="1"
-        android:textSize="28sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,9 +25,8 @@
         style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="@dimen/padding_normal"
         android:text="@string/ok_btn"
-        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@id/dqr_tv_result"
         app:layout_constraintTop_toBottomOf="@id/dqr_tv_result" />
 </androidx.constraintlayout.widget.ConstraintLayout>

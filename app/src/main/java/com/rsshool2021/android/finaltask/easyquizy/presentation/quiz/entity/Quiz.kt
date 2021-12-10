@@ -7,6 +7,6 @@ data class Quiz(
     fun calculateScore(): Int =
         questions.filter { question -> question.isCorrect() }.size
 
-    fun getProgress(): Int =
+    fun getCheckedProgress(): Int =
         questions.filter { question -> question.isChecked() }.size
 }
