@@ -7,7 +7,7 @@ sealed class QuizViewState {
         val quiz: Quiz,
         val progress: Int = 0,
         val currentPosition: Int = 0,
-        val isSubmitBtnVisible: Boolean = false
+        val checkedProgress: Int = 0
     ) : QuizViewState()
 
     data class Error(val errorMessage: String) : QuizViewState()

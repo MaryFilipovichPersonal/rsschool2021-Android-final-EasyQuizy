@@ -37,28 +37,28 @@ class QuizViewModel @Inject constructor(private val getQuestionsUseCase: GetQuiz
         }
     }
 
-    fun updatePosition(position: Int){
+    fun updatePosition(position: Int) {
         successfulViewState?.let {
             val progress = position + 1
-            val isSubmitBtnVisible = it.quiz.questions.size == progress
             _viewState.value = it.copy(
                 currentPosition = position,
-                progress = progress,
-                isSubmitBtnVisible = isSubmitBtnVisible)
+                progress = progress
+            )
         }
     }
 
     fun setCheckedAnswer(position: Int, answer: String) {
         successfulViewState?.let {
             val questions = it.quiz.questions.toMutableList()
-            if(questions[position].checkedAnswer != answer) {
+            if (questions[position].checkedAnswer != answer) {
                 questions[position] = questions[position].copy(checkedAnswer = answer)
-                _viewState.value = it.copy(quiz = Quiz(questions))
+                val quiz = Quiz(questions)
+                _viewState.value = it.copy(quiz = quiz, checkedProgress = quiz.getCheckedProgress())
             }
         }
     }
 
-    fun getQuizResult(): Int{
+    fun getQuizResult(): Int {
         return successfulViewState?.quiz?.calculateScore() ?: 0
     }
 

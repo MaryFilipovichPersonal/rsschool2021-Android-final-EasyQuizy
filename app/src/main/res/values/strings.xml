@@ -3,6 +3,7 @@
     <!--Quiz result-->
     <string name="quiz_result">Your score: %1d / 10</string>
     <string name="quiz_best_result">Best score: %1d / 10</string>
+    <string name="quiz_you_answered">You answered %1d of 10</string>
 
     <!-- Preference Titles -->
     <string name="theme_header">Theme</string>

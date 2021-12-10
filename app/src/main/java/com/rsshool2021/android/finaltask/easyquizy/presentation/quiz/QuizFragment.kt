@@ -9,10 +9,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.rsshool2021.android.finaltask.easyquizy.R
 import com.rsshool2021.android.finaltask.easyquizy.databinding.FragmentQuizBinding
+import com.rsshool2021.android.finaltask.easyquizy.presentation.quiz.adapter.QuizSubmitAdapter
 import com.rsshool2021.android.finaltask.easyquizy.presentation.quiz.adapter.QuizViewPagerAdapter
 import com.rsshool2021.android.finaltask.easyquizy.presentation.quiz.entity.Quiz
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,11 +28,18 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
 
     private val viewModel: QuizViewModel by viewModels()
 
-    private val adapter: QuizViewPagerAdapter by lazy {
+    private val quizAdapter: QuizViewPagerAdapter by lazy {
         QuizViewPagerAdapter { position, checkedAnswer ->
             handleAnswerCheck(position, checkedAnswer)
         }
     }
+
+    private val submitAdapter: QuizSubmitAdapter by lazy {
+        QuizSubmitAdapter {
+            goToResult()
+        }
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,7 +54,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
     }
 
     private fun setViewPager() {
-        binding.fqViewPager.adapter = adapter
+        binding.fqViewPager.adapter = ConcatAdapter(quizAdapter, submitAdapter)
     }
 
     private fun setListeners() {
@@ -59,14 +68,6 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                     viewModel.updatePosition(position)
                 }
             })
-            fqBtnSubmitQuiz.setOnClickListener {
-                val result = viewModel.getQuizResult()
-                findNavController().navigate(
-                    QuizFragmentDirections.actionQuizDestToResultDest(
-                        result
-                    )
-                )
-            }
         }
     }
 
@@ -92,9 +93,9 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
     private fun handleSuccessResult(viewState: QuizViewState.Success) {
         with(viewState) {
             updateQuiz(quiz)
+            setCheckedProgress(checkedProgress)
             setProgress(progress)
             setPosition(currentPosition)
-            setSubmitBtnVisibility(isSubmitBtnVisible)
         }
         showLoadingUi(false)
         showErrorUi(false)
@@ -117,6 +118,15 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         viewModel.setCheckedAnswer(position, checkedAnswer)
     }
 
+    private fun goToResult() {
+        val result = viewModel.getQuizResult()
+        findNavController().navigate(
+            QuizFragmentDirections.actionQuizDestToResultDest(
+                result
+            )
+        )
+    }
+
     private fun showLoadingUi(isVisible: Boolean) {
         binding.fqPbLoadingProgress.isVisible = isVisible
     }
@@ -137,7 +147,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
     }
 
     private fun updateQuiz(quiz: Quiz) {
-        adapter.submitList(quiz.questions)
+        quizAdapter.submitList(quiz.questions)
     }
 
     private fun setPosition(position: Int) {
@@ -145,15 +155,11 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
             binding.fqViewPager.setCurrentItem(position, false)
     }
 
-    private fun setProgress(progress: Int) {
-        binding.fqPbQuizProgress.progress = progress
+    private fun setCheckedProgress(checkedProgress: Int) {
+        submitAdapter.updateCheckedProgress(checkedProgress)
     }
 
-    private fun setSubmitBtnVisibility(isVisible: Boolean) {
-        binding.fqBtnSubmitQuiz.visibility = if (isVisible) {
-            View.VISIBLE
-        } else {
-            View.INVISIBLE
-        }
+    private fun setProgress(progress: Int) {
+        binding.fqPbQuizProgress.progress = progress
     }
 }
