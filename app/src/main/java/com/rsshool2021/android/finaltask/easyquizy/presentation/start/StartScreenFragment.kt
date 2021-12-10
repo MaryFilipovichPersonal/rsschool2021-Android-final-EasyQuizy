@@ -1,6 +1,9 @@
 package com.rsshool2021.android.finaltask.easyquizy.presentation.start
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -9,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.rsshool2021.android.finaltask.easyquizy.R
 import com.rsshool2021.android.finaltask.easyquizy.databinding.FragmentStartScreenBinding
@@ -26,11 +30,22 @@ class StartScreenFragment : Fragment(R.layout.fragment_start_screen) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setHasOptionsMenu(true)
+
         setObservers()
 
         setClickListeners()
 
         viewModel.getBestResult()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_main, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return item.onNavDestinationSelected(findNavController()) ||
+                super.onOptionsItemSelected(item)
     }
 
     private fun setObservers() {
