@@ -26,4 +26,8 @@
     <string name="retry_btn">Retry</string>
     <string name="submit_btn">Submit</string>
 
+    <!--    Navigation labels-->
+    <string name="result_dialog">Congratulations!</string>
+    <string name="settings">Settings</string>
+
 </resources>
