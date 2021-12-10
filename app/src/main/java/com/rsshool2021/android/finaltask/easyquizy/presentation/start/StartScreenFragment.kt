@@ -62,9 +62,6 @@ class StartScreenFragment : Fragment(R.layout.fragment_start_screen) {
             fsBtnStartQuiz.setOnClickListener {
                 navigateToQuiz()
             }
-            fsBtnSettings.setOnClickListener {
-                navigateToSettings()
-            }
         }
     }
 
@@ -81,9 +78,4 @@ class StartScreenFragment : Fragment(R.layout.fragment_start_screen) {
     private fun navigateToQuiz() {
         findNavController().navigate(StartScreenFragmentDirections.actionGoToQuiz())
     }
-
-    private fun navigateToSettings() {
-        findNavController().navigate(StartScreenFragmentDirections.actionGoToSettings())
-    }
-
 }
